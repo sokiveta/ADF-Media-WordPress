@@ -93,15 +93,30 @@ defined('ABSPATH') || exit;
       </div><!-- .container -->
     </nav><!-- .navbar -->
 
-    <?php 
+
+    <div id="header-widget-area" class="ql-widget-area widget-area" role="complementary">
+	  <div class="container">
+        <div id="bluebar">
+			<h5 class="wp-block-heading">CURRENT TOPICS</h5>
+<?php     
     // BLUE BAR "CURRENT TOPICS" HEADER WIDGET
-    if ( is_active_sidebar( 'bluebar-header-widget' ) ) : ?>
-      <div id="header-widget-area" class="ql-widget-area widget-area" role="complementary">
-		    <div class="container">
-          <?php dynamic_sidebar( 'bluebar-header-widget' ); ?>
-        </div>
+    $blue_menu = wp_get_nav_menus();
+    foreach ( $blue_menu as $menu /** @var WP_Term $menu */ ) {
+        if ($menu->name == "Current Topics") {
+            $menu_items = wp_get_nav_menu_items( $menu->term_id );
+            $isFirst = true;     
+            if ( ! empty( $menu_items ) ) {
+                foreach ( $menu_items as $menu_item ) {
+                    echo ($isFirst === true) ? $isFirst = false : '<div class="topic_divider">|</div>';
+                    echo '<div class="current_topic"><a href="' . $menu_item->url . '">' . $menu_item->title . '</a></div>';
+                }
+            }
+        }
+    }
+?>
+		</div>
       </div>
-    <?php endif; ?>
+    </div>
 	  
     <?php
     if (class_exists('WooCommerce')) :

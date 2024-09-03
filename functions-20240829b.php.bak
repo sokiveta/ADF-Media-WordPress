@@ -6,8 +6,10 @@
  * @version 6.0.0
  */
 
+
 // Exit if accessed directly
 defined('ABSPATH') || exit;
+
 
 /**
  * Enqueue scripts and styles
@@ -102,6 +104,56 @@ function wpb_load_widget() {
 }
 add_action( 'widgets_init', 'wpb_load_widget' );
 
+function bluebar_widgets_init() {
+    $menus = wp_get_nav_menus();
+    $current_topics = '';
+    foreach ( $menus as $menu /** @var WP_Term $menu */ ) {
+        if ($menu->name == "Current Topics") {
+            $menu_items = wp_get_nav_menu_items( $menu->term_id );
+            $isFirst = true;     
+            if ( ! empty( $menu_items ) ) {
+                foreach ( $menu_items as $menu_item ) {
+                    $current_topics .= ($isFirst === true) ? $isFirst = false : '<div class="topic_divider">|</div>';
+                    $current_topics .= '<div class="current_topic"><a href="' . $menu_item->url . '">' . $menu_item->title . '</a></div>';
+                }
+            }
+        }
+    }
+    register_sidebar( array(
+        'name' => 'Blue Bar Header Widget',
+        'id' => 'bluebar-header-widget',
+        'before_widget' => '<div id="bluebar">',
+        'after_widget' => $current_topics.'</div>'
+    ) );
+}
+add_action( 'widgets_init', 'bluebar_widgets_init' );
+
+
+function sidebar_currenttopics_widgets_init() {
+    $menus = wp_get_nav_menus();
+    $sidebar_current_topics = '<ul class="sidebar_current_topic_list">';
+    foreach ( $menus as $menu /** @var WP_Term $menu */ ) {
+        if ($menu->name == "Current Topics") {
+            $menu_items = wp_get_nav_menu_items( $menu->term_id );
+            if ( ! empty( $menu_items ) ) {
+                foreach ( $menu_items as $menu_item ) {
+                    $sidebar_current_topics .= '<li class="sidebar_current_topic"><a href="' . $menu_item->url . '">' . $menu_item->title . '</a></li>';
+                }
+            }
+        }
+    }
+	$sidebar_current_topics .= '</ul>';
+	$sidebar_current_topics .= '<hr class="wp-block-separator has-text-color has-black-color has-alpha-channel-opacity has-black-background-color has-background is-style-wide" />';
+    register_sidebar( array(
+        'name' => 'Sidebar Current Topics Widget',
+        'id' => 'sidebar-currenttopics-widget',
+        'before_widget' => '<div id="sidebar_currenttopics">',
+        'after_widget' => $sidebar_current_topics.'</div>'
+    ) );
+}
+add_action( 'widgets_init', 'sidebar_currenttopics_widgets_init' );
+
+
 function register_copyright_date_block() {
     // Register the block script
     wp_register_script(
@@ -118,26 +170,10 @@ function register_copyright_date_block() {
 }
 add_action('init', 'register_copyright_date_block');
 
-function rename_widget_areas() {
-    // Unregister the old sidebars
-    unregister_sidebar('sidebar-1'); // Sidebar
-    unregister_sidebar('footer-1');  // Footer 1
-    unregister_sidebar('footer-2');  // Footer 2
-    unregister_sidebar('footer-3');  // Footer 3
-    unregister_sidebar('footer-4');  // Footer 4
-    unregister_sidebar('footer-info');  // Footer Info
-
-    // Register the new sidebars with the desired names
-    register_sidebar(array(
-        'name'          => __('Sidebar - Global', 'adf-theme-2024'),
-        'id'            => 'sidebar-1',
-        'description'   => __('Widgets in this area will be shown on the global sidebar.', 'adf-theme-2024'),
-        'before_widget' => '<section id="%1$s" class="widget mb-4 %2$s">',
-        'after_widget'  => '</section>',
-    ));
+function register_adf_page_sidebars() {
 
     register_sidebar( array(
-        'name' => 'Sidebar - Cases / Press Releases',
+        'name' => 'ADF Page Sidebar',
         'id' => 'adf-page-sidebar',
         'before_widget' => '<div class="widget">',
         'after_widget' => '</div>',
@@ -146,67 +182,16 @@ function rename_widget_areas() {
     ));
 
     register_sidebar( array(
-        'name' => 'Bottom Area - Cases / Press Releases',
+        'name' => 'ADF Page Bottom Area',
         'id' => 'adf-page-bottom-area',
         'before_widget' => '<div class="widget">',
         'after_widget' => '</div>',
         'before_title' => '<h3 class="widget-title">',
         'after_title' => '</h3>',
     ));
-
-    register_sidebar(array(
-        'name'          => __('Footer Logo', 'adf-theme-2024'),
-        'id'            => 'footer-1',
-        'description'   => __('Widgets in this area will be shown in the footer logo area.', 'adf-theme-2024'),
-        'before_widget' => '<div id="%1$s" class="widget footer_widget mb-3 %2$s">',
-        'after_widget'  => '</div>',
-    ));
-
-    register_sidebar(array(
-        'name'          => __('Footer Text', 'adf-theme-2024'),
-        'id'            => 'footer-2',
-        'description'   => __('Widgets in this area will be shown in the footer text area.', 'adf-theme-2024'),
-        'before_widget' => '<div id="%1$s" class="widget footer_widget mb-3 %2$s">',
-        'after_widget'  => '</div>',
-    ));
-
-    register_sidebar(array(
-        'name'          => __('Footer Column 1', 'adf-theme-2024'),
-        'id'            => 'footer-3',
-        'description'   => __('Widgets in this area will be shown in the first footer column.', 'adf-theme-2024'),
-        'before_widget' => '<div id="%1$s" class="widget footer_widget mb-3 %2$s">',
-        'after_widget'  => '</div>',
-    ));
-
-    register_sidebar(array(
-        'name'          => __('Footer Column 2', 'adf-theme-2024'),
-        'id'            => 'footer-4',
-        'description'   => __('Widgets in this area will be shown in the second footer column.', 'adf-theme-2024'),
-        'before_widget' => '<div id="%1$s" class="widget footer_widget mb-3 %2$s">',
-        'after_widget'  => '</div>',
-    ));
-
-    register_sidebar(array(
-        'name'          => __('Footer Copyright Info', 'adf-theme-2024'),
-        'id'            => 'footer-info',
-        'description'   => __('Widgets in this area will be shown in the footer copyright info area.', 'adf-theme-2024'),
-        'before_widget' => '<div id="%1$s" class="widget footer_widget mb-3 %2$s">',
-        'after_widget'  => '</div>',
-    ));
 }
+add_action( 'widgets_init', 'register_adf_page_sidebars' );
 
-add_action('widgets_init', 'rename_widget_areas', 11);
-
-function unregister_unwanted_widgets() {
-    // Remove WordPress widgets
-    unregister_sidebar('top-bar');
-    unregister_sidebar('top-nav');
-    unregister_sidebar('top-nav-2');
-    unregister_sidebar('footer-top');
-    unregister_sidebar('404-page'); 
-}
-
-add_action('widgets_init', 'unregister_unwanted_widgets', 11);
 
 class adf_sidebar_section extends WP_Widget {
     // legal_documents_widget
@@ -325,32 +310,17 @@ class adf_sidebar_section extends WP_Widget {
         $instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
         $instance['field'] = ! empty( $new_instance['field'] ) ? sanitize_text_field( $new_instance['field'] ) : '';
 
+ 
         return $instance;
     }
  
     // Class adf_sidebar_section ends here
 }
-
+ 
 // Register and load the widget
 function csl_load_widget() {
     register_widget( 'adf_sidebar_section' );
 }
+ 
 add_action( 'widgets_init', 'csl_load_widget' );
 
-function cases_related_press_release_featured_image($atts) {
-    $atts = shortcode_atts( array(
-        'post_id' => get_the_ID(), // Default to current post ID
-        'thumbnail_url' => '',     // Placeholder for thumbnail URL
-        'post_title' => '',        // Placeholder for post title
-    ), $atts );
-    $pod = pods('case', $atts['post_id']);
-    $related_items = $pod->field('cases_related_press_release');
-    if ($related_items && is_array($related_items)) {
-        $first_item = $related_items[0];
-        $thumbnail_url = esc_url($atts['thumbnail_url']);
-        $post_title = esc_attr($atts['post_title']);       
-        return '<img src="' . $thumbnail_url . '" alt="' . $post_title . '" />';
-    }
-    return '<img src="/wp-content/uploads/2024/08/adf-logo-gray-254x280-1.png" alt="' . $post_title . '" />   ';
-}
-add_shortcode('pods_related_featured_image', 'cases_related_press_release_featured_image');

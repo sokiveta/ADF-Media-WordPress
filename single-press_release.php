@@ -12,22 +12,15 @@
 
                         <header class="entry-header">
 
-                            <?php // bootscore_category_badge(); ?>
                             <h1 class="case-heading entry-title press_release_h1"><?php the_title(); ?></h1>
-                            
                             <?=get_the_post_thumbnail($pod->ID(), 'full', array('alt' => $pod->field('post_title')))?>
-                            
                             <p class="entry-meta">
                                 <small class="text-body-secondary">
                                 <?php
                                 // echo '<p>'.date('l, M j, Y',strtotime($pod->field('press_release_published_on'))).'</p>';
-                                // bootscore_date();
-                                // bootscore_author();
-                                // bootscore_comment_count();
                                 ?>
                                 </small>
                             </p>
-
 
                             <?php if ( $pod->field( 'press_release_sub_title' ) ) : ?>
                                 <h2 class="entry-subtitle"><?php echo esc_html( $pod->field( 'press_release_sub_title' ) ); ?></h2>

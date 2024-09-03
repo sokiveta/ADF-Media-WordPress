@@ -30,13 +30,32 @@ if (!is_active_sidebar('sidebar-1')) {
         <span class="h5 offcanvas-title" id="sidebarLabel"><?php esc_html_e('Sidebar', 'bootscore'); ?></span>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebar" aria-label="Close"></button>
       </div>
-      <div class="offcanvas-body flex-column">
-		<!-- custom sidebar widget -->
-		<?php if ( is_active_sidebar( 'sidebar-currenttopics-widget' ) ) : ?>
-		  <div id="sidebar-top-widget" class="ql-widget-area widget-area" role="complementary">
-			<?php dynamic_sidebar( 'sidebar-currenttopics-widget' ); ?>
-		  </div>
-		<?php endif; ?>
+      <div class="offcanvas-body flex-column">     
+
+        <!-- custom sidebar widget -->
+        <div id="sidebar-top-widget" class="ql-widget-area widget-area" role="complementary">
+          <div id="sidebar_currenttopics">
+            <h4 class="wp-block-heading">CURRENT TOPICS</h4>
+            <ul class="sidebar_current_topic_list"></ul>
+            <?php            
+            $side_blue_menu = wp_get_nav_menus();
+            foreach ( $side_blue_menu as $menu /** @var WP_Term $menu */ ) {
+              if ($menu->name == "Current Topics") {
+                $menu_items = wp_get_nav_menu_items( $menu->term_id );
+                if ( ! empty( $menu_items ) ) {
+                  foreach ( $menu_items as $menu_item ) {
+                    echo '<li class="sidebar_current_topic"><a href="' . $menu_item->url . '">' . $menu_item->title . '</a></li>';
+                  }
+                }
+              }
+            }
+            ?>
+            </ul>
+            <hr class="wp-block-separator has-text-color has-black-color has-alpha-channel-opacity has-black-background-color has-background is-style-wide" />
+          </div>
+        </div>
+        <!-- end custom sidebar widget -->
+
         <?php dynamic_sidebar('sidebar-1'); ?>		  
       </div>
     </div>

@@ -11,7 +11,6 @@ get_header();
                     the_post();
                     $case_id = get_the_ID();
                     $pod = pods('case', $case_id);
-                    // $pod = pods( 'case', get_the_ID() );
                     $post_title = get_the_title();
                 ?>
                     <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
@@ -21,31 +20,6 @@ get_header();
                             <?php if ( $pod->field( 'cases_sub_title' ) ) : ?>
                                 <h2 class="entry-subtitle"><?php echo esc_html( $pod->field( 'cases_sub_title' ) ); ?></h2>
                             <?php endif; ?>
-
-
-                            <!-- <?php // if ( $pod->field( 'cases_published_on' ) ) : ?>
-                                <p class="entry-published-on">cases_published_on: <?php // echo esc_html( $pod->field( 'cases_published_on' ) ); ?></p>
-                            <?php // endif; ?> -->
-
-                            <?php
-                            // $case_array = array (
-                            //     'cases_sub_title', 
-                            //     'cases_published_on', 
-                            //     'cases_related_press_release', 
-                            //     'cases_tags', 
-                            //     'cases_show_related_press_release_extras', 
-                            //     'cases_extras', 
-                            //     'cases_card_summary', 
-                            //     'cases_biography', 
-                            //     'cases_related_resources', 
-                            //     'cases_shared_related_content', 
-                            //     'cases_reverse_commentory_checkbox', 
-                            //     'case_commentory', 
-                            //     'cases_reverse_legal_file_checkbox', 
-                            //     'cases_internal_legal_files', 
-                            //     'cases_external_legal_files'
-                            // );
-                            ?>
 
                         </header>
 
@@ -60,11 +34,6 @@ get_header();
                             <hr />
                             <?php
 
-                            // echo "<pre>";
-                            // print_r($pod); 
-                            // echo "</pre>";
-
-
                             // Custom SQL query to filter by related case
                             $params = array(
                                 'limit' => 1, // Limit to one result
@@ -75,23 +44,17 @@ get_header();
                             $press_pod = pods('press_release', $params);
 
                             if ($press_pod->total() > 0) {
-                                while ($press_pod->fetch()) {
-                                    
+                                while ($press_pod->fetch()) {                                    
                                     echo get_the_post_thumbnail($press_pod->ID(), 'full', array('alt' => $press_pod->field('post_title')));    
                                     echo '<h2 class="case_subtitle">'.$press_pod->field('post_title').'</h2>';
                                     echo '<p><strong>'.$press_pod->field('press_release_subtitle').'</strong></p>';
                                     echo '<p>'.date('l, M j, Y',strtotime($press_pod->field('press_release_published_on'))).'</p>';
                                     echo '<p>'.$press_pod->field('post_content').'</p>';
-                                    // $press_url = get_permalink($press_pod->ID());
-                                    // // Display the press release title with a link
-                                    // echo '<a href="' . esc_url($press_url) . '">' . esc_html($press_title) . '</a>';
-                                    // break; // Exit after the first match
                                 }
                             } else {
                                 echo 'No related press releases found.';
                             }
 
-                            // get_the_post_thumbnail($f['ID'], 'thumbnail', array('alt' => $f['post_title']))
                             ?>
                         </div>
                         
