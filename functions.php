@@ -37,11 +37,11 @@ class wpb_widget extends WP_Widget {
             'wpb_widget',
  
             // Widget name will appear in UI
-            __( 'WPBeginner Widget', 'textdomain' ),
+            __( 'WPBeginner Widget', 'adf-bootscore-child-theme' ),
  
             // Widget description
             [
-                'description' => __( 'Sample widget based on WPBeginner Tutorial', 'textdomain' ),
+                'description' => __( 'Sample widget based on WPBeginner Tutorial', 'adf-bootscore-child-theme' ),
             ]
         );
     }
@@ -57,7 +57,7 @@ class wpb_widget extends WP_Widget {
         }
  
         // This is where you run the code and display the output
-        echo __( 'Hello, World!', 'textdomain' );
+        echo __( 'Hello, World!', 'adf-bootscore-child-theme' );
         echo $args['after_widget'];
     }
  
@@ -66,14 +66,14 @@ class wpb_widget extends WP_Widget {
         if ( isset( $instance['title'] ) ) {
             $title = $instance['title'];
         } else {
-            $title = __( 'New title', 'textdomain' );
+            $title = __( 'New title', 'adf-bootscore-child-theme' );
         }
  
         // Widget admin form
         ?>
         <p>
             <label for="<?php echo $this->get_field_id( 'title' ); ?>">
-                <?php _e( 'Title:', 'textdomain' ); ?>
+                <?php _e( 'Title:', 'adf-bootscore-child-theme' ); ?>
             </label>
             <input
                     class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>"
@@ -216,11 +216,11 @@ class adf_sidebar_section extends WP_Widget {
             'adf_sidebar_section',
  
             // Widget name will appear in UI
-            __( 'ADF Sidebar Section', 'textdomain' ),
+            __( 'ADF Sidebar Section', 'adf-bootscore-child-theme' ),
  
             // Widget description
             [
-                'description' => __( 'Sidebar section for ADF related info on case and press release pages', 'textdomain' ),
+                'description' => __( 'Sidebar section for ADF related info on case and press release pages', 'adf-bootscore-child-theme' ),
             ]
         );
     }
@@ -247,13 +247,28 @@ class adf_sidebar_section extends WP_Widget {
             echo "<div id='case-top-area'>";
             if ( ! empty( $title ) ) {
                 echo "<h4 class='wp-block-heading'>" . $title . "</h4>";
-            }            
+            }      
+			
+			$adf_ul_class = "sidebar_list";		
+            if (isset($pod_field[0]['post_type']) && $pod_field[0]['post_type'] != "") {				
+             	if ($pod_field[0]['post_type'] == "press_release" || $pod_field[0]['post_type'] == "commentory") {
+			 		$adf_ul_class .= " threecol_ul";
+             	} 
+			}
             
-            echo __( '<ul class="sidebar_list">', 'textdomain' );
-            foreach ($pod_field AS $f) {
-                if (isset($f['post_title']) && $f['post_title'] != "") {
-                    if ($f['post_type'] == "biography") {
-                        $legal_file_link = "<li class='sidebar_list_item'>
+			// echo "<pre>";
+			// print_r($pod_field);
+			// echo "</pre>";
+			
+            echo __( '<ul class="'.$adf_ul_class.'">', 'adf-bootscore-child-theme' );
+            if (!is_array($pod_field)) {
+              $legal_file_link = "<li class='sidebar_list_item'>".$pod_field."</li>";
+            } else { 
+              foreach ($pod_field AS $f) {
+                if (!is_array($f)) {
+                    $legal_file_link = "<li class='sidebar_list_item sidebar_link'>".$f."</li>";						
+                } elseif ($f['post_type'] == "biography") {
+                    $legal_file_link = "<li class='sidebar_list_item'>
                         <div class='case_biography'>
                             <div class='biography_header'>
                                 <div class='biography_photo'><a href='".$f['guid']."'>".get_the_post_thumbnail($f['ID'], 'thumbnail', array('alt' => $f['post_title']))."</a></div>
@@ -263,24 +278,31 @@ class adf_sidebar_section extends WP_Widget {
                         </div>
                         </li>";
                     } elseif ($f['post_type'] == "attachment") {
-                        $legal_file_link = "<li class='sidebar_list_item'> 
+                        $legal_file_link = "<li class='sidebar_list_item'>
 						<a href='".str_replace('/home/wpe-user/sites/adfmediadev', '', $f['guid'])."' target='_blank'>".$f['post_excerpt']."</a></li>";
 					} elseif ($f['post_type'] == "case") {
-                        // $legal_file_link = "<li class='sidebar_list_item'><a href='".str_replace('https://adfmediadev.wpenginepowered.com/?cases', 'https://adfmediadev.wpenginepowered.com/?case', $f['guid'])."'>".$f['post_title']."</a></li>";  
+                        // $legal_file_link = "<li class='sidebar_list_item'>
+                        // <a href='".str_replace('https://adfmediadev.wpenginepowered.com/?cases', 'https://adfmediadev.wpenginepowered.com/?case', $f['guid'])."'>".$f['post_title']."</a></li>";  
                         $legal_file_link = "<li class='sidebar_list_item'> <a href='/case/". $f['post_name']."'>".$f['post_title']."</a></li>";                
                     } elseif ($f['post_type'] == "press_release") {
-                        $legal_file_link = "<li class='below_list_item'> 
+                        $legal_file_link = "<li class='below_list_item threecol_li'>
                             <a href='/press_release/".$f['post_name']."'>".$f['post_title']."</a>
                             <p>".date('l, M j, Y', strtotime($f['post_date']))."</p>
                         </li>";
+                    } elseif ($f['post_type'] == "commentory") {
+                        $legal_file_link = "<li class='below_list_item threecol_li'>
+                            <a href='/press_release/".$f['post_name']."'>".$f['post_title']."</a>
+                            <p>".get_the_author_meta('display_name', $f['post_author'])."</p>
+                        </li>";						
                     } else { 
-                        $legal_file_link = "<li class='sidebar_list_item'> <a href='".$f['guid']."'>".$f['post_title']."</a> ... </li>";
+                        $legal_file_link = "<li class='sidebar_list_item'>
+						<a href='".$f['guid']."'>".$f['post_title']."</a> ... </li>";
                     }
 
-                    echo __( $legal_file_link, 'textdomain' );
+                    echo __( $legal_file_link, 'adf-bootscore-child-theme' );
                 }
             } 
-            echo __( '</ul>', 'textdomain' );
+            echo __( '</ul>', 'adf-bootscore-child-theme' );
             echo "</div>";
             echo $args['after_widget'];
         } 
@@ -291,7 +313,7 @@ class adf_sidebar_section extends WP_Widget {
         if ( isset( $instance['title'] ) ) {
             $title = $instance['title'];
         } else {
-            $title = __( 'New title', 'textdomain' );
+            $title = __( 'New title', 'adf-bootscore-child-theme' );
         } 
         $field = ! empty( $instance['field'] ) ? $instance['field'] : '';
 
@@ -299,7 +321,7 @@ class adf_sidebar_section extends WP_Widget {
         ?>
         <p>
             <label for="<?php echo $this->get_field_id( 'title' ); ?>">
-                <?php _e( 'Title:', 'textdomain' ); ?>
+                <?php _e( 'Title:', 'adf-bootscore-child-theme' ); ?>
             </label>
             <input
                     class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>"
