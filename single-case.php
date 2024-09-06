@@ -63,7 +63,7 @@ get_header();
                             <?php 
                             // Display video
                             if (!empty($pod->field( 'cases_extras' ))) {
-                                echo '<div>'.$pod->field('cases_extras').'</div>
+                                echo '<div class="adf_featured_coverage">'.$pod->field('cases_extras').'</div>
                                 <hr />';
                             }
 
@@ -82,6 +82,41 @@ get_header();
                                     <a href="'.get_permalink($pod_img->ID()).'">'.$post_title.' photos</a>
                                     <hr />
                                 </div>';
+                            }
+
+                            // Legal Documents: internal and external
+                            if (is_array($pod->field('cases_internal_legal_files')) && 
+                                count($pod->field('cases_internal_legal_files')) > 0 && 
+                                is_array($pod->field('cases_external_legal_files')) && 
+                                count($pod->field('cases_external_legal_files')) > 0) {
+                                $combined_files = array_merge(
+                                    $pod->field('cases_internal_legal_files'), 
+                                    $pod->field('cases_external_legal_files')
+                                );
+                            } elseif (is_array($pod->field('cases_internal_legal_files')) && count($pod->field('cases_internal_legal_files')) > 0) {
+                                $combined_files = $pod->field('cases_internal_legal_files'); 
+                            } elseif (is_array($pod->field('cases_external_legal_files')) && count($pod->field('cases_external_legal_files')) > 0) {
+                                $combined_files = $pod->field('cases_external_legal_files'); 
+                            }
+                            if (is_array($combined_files) && count($combined_files) > 0) {		
+                                // Function to sort by date in descending order
+                                usort($combined_files, function($a, $b) {
+                                    $date_a = strtotime($a['post_date']); 
+                                    $date_b = strtotime($b['post_date']); 
+                                    return $date_b - $date_a;
+                                });
+                                if (!empty($combined_files)) {
+                                    echo '<div class="bottom_item">';
+                                    echo '<h4>Legal Documents</h4>';
+                                    echo '<ul>';
+                                    foreach ($combined_files as $file) {
+                                        echo '<li>
+                                        <a href="'.str_replace('/home/wpe-user/sites/adfmediadev', '', $file['guid']).'" target="_blank">' . esc_html($file['post_title']) . '</a> - ' . date('F j, Y', strtotime($file['post_date'])) . '</li>';
+                                    }
+                                    echo '</ul>';
+                                    echo '</div>';
+                                    echo '<hr />';
+                                }					
                             }
 
                             dynamic_sidebar( 'adf-page-bottom-area' ); ?>

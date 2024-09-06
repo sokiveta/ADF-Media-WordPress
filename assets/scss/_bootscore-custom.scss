@@ -660,3 +660,50 @@ h2 {
   color: #007bff;
   text-decoration: underline;
 }
+.bottom_item ul {
+  list-style-type: none;
+  padding: 0;
+}
+.bottom_item li {
+  font-size: 13px;
+}
+.adf_featured_coverage h4 {
+  color: #fff !important;
+  font-size: 12px !important;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: #cd202c;
+  padding: 5px 8px;
+  width: max-content;
+  margin-bottom: 10px;
+}
+.adf_featured_coverage h3 {
+  color: #fff !important;
+  font-size: 12px !important;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: #cd202c;
+  padding: 5px 8px;
+  width: max-content;
+  margin-bottom: 10px;
+}
+.adf_featured_coverage li {
+  font-family: Tahoma, Verdana, sans-serif;
+  font-weight: bold;
+  font-size: 13px;
+  color: #383f53;
+}
+.adf_featured_coverage li a {
+  font-family: Tahoma, Verdana, sans-serif;
+  font-weight: bold;
+  font-size: 13px;
+  color: #007bff;
+  text-decoration: none;
+}
+.adf_featured_coverage li a:hover {
+  font-family: Tahoma, Verdana, sans-serif;
+  font-weight: bold;
+  font-size: 13px;
+  color: #007bff;
+  text-decoration: underline;
+}

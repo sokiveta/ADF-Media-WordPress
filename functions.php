@@ -251,7 +251,7 @@ class adf_sidebar_section extends WP_Widget {
 			
 			$adf_ul_class = "sidebar_list";		
             if (isset($pod_field[0]['post_type']) && $pod_field[0]['post_type'] != "") {				
-             	if ($pod_field[0]['post_type'] == "press_release" || $pod_field[0]['post_type'] == "commentory") {
+             	if ($pod_field[0]['post_type'] == "press_release" || $pod_field[0]['post_type'] == "commentory" || $pod_field[0]['post_type'] == "commentary") {
 			 		$adf_ul_class .= " threecol_ul";
              	} 
 			}
@@ -280,20 +280,22 @@ class adf_sidebar_section extends WP_Widget {
                     } elseif ($f['post_type'] == "attachment") {
                         $legal_file_link = "<li class='sidebar_list_item'>
 						<a href='".str_replace('/home/wpe-user/sites/adfmediadev', '', $f['guid'])."' target='_blank'>".$f['post_excerpt']."</a></li>";
-					} elseif ($f['post_type'] == "case") {
-                        // $legal_file_link = "<li class='sidebar_list_item'>
-                        // <a href='".str_replace('https://adfmediadev.wpenginepowered.com/?cases', 'https://adfmediadev.wpenginepowered.com/?case', $f['guid'])."'>".$f['post_title']."</a></li>";  
+					} elseif ($f['post_type'] == "case") {  
                         $legal_file_link = "<li class='sidebar_list_item'> <a href='/case/". $f['post_name']."'>".$f['post_title']."</a></li>";                
                     } elseif ($f['post_type'] == "press_release") {
                         $legal_file_link = "<li class='below_list_item threecol_li'>
                             <a href='/press_release/".$f['post_name']."'>".$f['post_title']."</a>
                             <p>".date('l, M j, Y', strtotime($f['post_date']))."</p>
                         </li>";
-                    } elseif ($f['post_type'] == "commentory") {
+                    } elseif ($f['post_type'] == "commentory" || $f['post_type'] == "commentary") {                 
+                        $commentary_link = get_post_meta($f['ID'], 'link_url', true);
+                        $link_url = ($commentary_link) ? esc_url($commentary_link) : $f['guid'];
+                        $commentary_author = get_post_meta($f['ID'], 'link_author', true);       
+                        $author_name = ($commentary_author) ? esc_html($commentary_author) : get_the_author_meta('display_name', $f['post_author']);
                         $legal_file_link = "<li class='below_list_item threecol_li'>
-                            <a href='/press_release/".$f['post_name']."'>".$f['post_title']."</a>
-                            <p>".get_the_author_meta('display_name', $f['post_author'])."</p>
-                        </li>";						
+                            <a href='".$link_url."' target='_blank'>".$f['post_title']."</a>
+                            <p>".$author_name."</p>
+                        </li>";
                     } else { 
                         $legal_file_link = "<li class='sidebar_list_item'>
 						<a href='".$f['guid']."'>".$f['post_title']."</a> ... </li>";
