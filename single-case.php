@@ -44,16 +44,41 @@ get_header();
                             $press_pod = pods('press_release', $params);
 
                             if ($press_pod->total() > 0) {
-                                while ($press_pod->fetch()) {                                    
-                                    echo get_the_post_thumbnail($press_pod->ID(), 'full', array('alt' => $press_pod->field('post_title')));    
-                                    echo '<h2 class="case_subtitle">'.$press_pod->field('post_title').'</h2>';
-                                    echo '<p><strong>'.$press_pod->field('press_release_subtitle').'</strong></p>';
-                                    echo '<p>'.date('l, M j, Y',strtotime($press_pod->field('press_release_published_on'))).'</p>';
-                                    echo '<p>'.$press_pod->field('post_content').'</p>';
+                                while ($press_pod->fetch()) {
+                                    // Check if the featured image (post thumbnail) exists
+                                    $post_thumbnail = get_the_post_thumbnail($press_pod->ID(), 'full', array('alt' => $press_pod->field('post_title')));
+                                    if ($post_thumbnail) {
+                                        echo $post_thumbnail;
+                                    }
+
+                                    // Check if the post title exists
+                                    $post_title = $press_pod->field('post_title');
+                                    if (!empty($post_title)) {
+                                        echo '<h2 class="case_subtitle">' . esc_html($post_title) . '</h2>';
+                                    }
+
+                                    // Check if the press release subtitle exists
+                                    $press_release_subtitle = $press_pod->field('press_release_subtitle');
+                                    if (!empty($press_release_subtitle)) {
+                                        echo '<p><strong>' . esc_html($press_release_subtitle) . '</strong></p>';
+                                    }
+
+                                    // Check if the press release published date exists
+                                    // $press_release_published_on = $press_pod->field('press_release_published_on');
+                                    // if (!empty($press_release_published_on)) {
+                                    //     echo '<p>' . esc_html(date('l, M j, Y', strtotime($press_release_published_on))) . '</p>';
+                                    // }
+
+                                    // Check if the post content exists
+                                    $post_content = $press_pod->field('post_content');
+                                    if (!empty($post_content)) {
+                                        echo '<p>' . wp_kses_post($post_content) . '</p>';
+                                    }
                                 }
                             } else {
                                 echo 'No related press releases found.';
                             }
+
 
                             ?>
                         </div>
