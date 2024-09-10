@@ -711,3 +711,118 @@ h2 {
   color: #007bff;
   text-decoration: underline;
 }
+
+/***********************************************
+Popup
+***********************************************/
+
+.social-side-bar {
+  position: fixed;
+  z-index: 200;
+  left: 0;
+  top: 30%;
+}
+.popout-button {
+  width: 60px;
+  height: 60px;
+  border: 1px solid #383f53;
+  border-left: none;
+  text-align: center;
+  padding-top: 12px;
+  color: #aeaeae;
+  cursor: pointer;
+  border-radius: 2px;
+  background-color: white;
+
+  font-size: 12px;
+  font-weight: bold;
+  color: #383f53;
+  text-transform: uppercase;
+}
+.popout-button:hover {
+  background-color: #aeaeae;
+}
+.popout-button i {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+.popout-container {
+  width: 260px;
+  height: 80px;
+  border-radius: 10px;
+  position: relative;
+  left: 75px;
+  top: -70px;
+  background-color: white;
+
+  padding-left: 22px;
+  padding-top: 2px;
+
+  display: none;
+
+  -webkit-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: -1px 0px 16px 0px rgba(0, 0, 0, 0.75);
+}
+
+.social-side-bar:hover .popout-container {
+  display: block;
+}
+
+.popout-container:before {
+  content: ' ';
+  position: absolute;
+  top: 30px;
+  left: -10px;
+
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent white transparent transparent;
+}
+.popout-container div {
+  float: left;
+  background-color: cornflowerblue;
+  font-size: 18px;
+  border-radius: 50%;
+  text-align: center;
+  color: white;
+  margin-top: 17px;
+  margin-left: 13px;
+}
+.popout-container div:hover {
+  border: 1px solid #aeaeae;
+  opacity: 70%;
+}
+
+.popout-container div a {
+  color: white;
+  width: 40px;
+  height: 40px;
+  padding-top: 8px;
+  display: block;
+}
+
+.popout-container .fb-popout-btn {
+  background-color: #0056b3;
+}
+
+.popout-container .tw-popout-btn {
+  background-color: #1da1f2;
+}
+
+.popout-container .ln-popout-btn {
+  background-color: #2867b2;
+}
+
+.popout-container .email-popout-btn {
+  background-color: #fe0000;
+}
+
+.popout-button.print-btn {
+  position: fixed;
+  z-index: 200;
+  left: 0;
+  top: calc(30% + 60px);
+}

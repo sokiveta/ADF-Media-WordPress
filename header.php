@@ -134,3 +134,29 @@ defined('ABSPATH') || exit;
     ?>
 
   </header><!-- #masthead -->
+
+<!-- Left-side buttons: share, print --> 
+ <?php 
+if ( $post_type == 'case' || $post_type == 'press_release' ) {
+ $full_url = "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; 
+ $title = get_the_title();
+ ?>  
+<div class="social-side-bar">
+	<div class="popout-button social-popup-btn">
+		<i class="fa fa-share-alt"></i><br />
+		Share
+        </div>
+        <div class="popout-container">
+		<div class="fb-popout-btn"><a target="_blank" href="https://www.facebook.com/dialog/share?app_id=119697833097399&display=page&href=<?=$link?>&redirect_uri=<?=$link?>"><i class="fab fa-facebook-f"></i></a></div>
+		<div class="tw-popout-btn"><a target="_blank" href="http://twitter.com/share?text=<?=$title?>&url=<?=$full_url?>"><i class="fab fa-twitter"></i></a></div>
+		<div class="ln-popout-btn"><a target="_blank" href="https://www.linkedin.com/sharing/share-offsite/?url=<?=$full_url?>"><i class="fab fa-linkedin"></i></i></a></div>    
+		<div class="email-popout-btn"><a target="_blank" href="#"><i class="fa fa-envelope"></i></a></div>
+            
+        </div>
+</div>
+<div class="popout-button print-btn">
+	<i class="far fa-newspaper"></i>
+        <br />
+        Print
+</div>
+<?php } ?>
