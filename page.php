@@ -30,7 +30,7 @@ get_header();
 
             <div class="entry-header">
               <?php the_post(); ?>
-              <h1><?php the_title(); ?></h1>
+              <?php // the_title(); ?>
               <?php bootscore_post_thumbnail(); ?>
             </div>
 

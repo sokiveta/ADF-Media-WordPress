@@ -16,12 +16,20 @@ defined('ABSPATH') || exit;
 
 ?>
 <!doctype html>
-<html <?php language_attributes(); ?>>
+<html <?php language_attributes(); ?>  dir="ltr" prefix="content: http://purl.org/rss/1.0/modules/content/  dc: http://purl.org/dc/terms/  foaf: http://xmlns.com/foaf/0.1/  og: http://ogp.me/ns#  rdfs: http://www.w3.org/2000/01/rdf-schema#  schema: http://schema.org/  sioc: http://rdfs.org/sioc/ns#  sioct: http://rdfs.org/sioc/types#  skos: http://www.w3.org/2004/02/skos/core#  xsd: http://www.w3.org/2001/XMLSchema# ">
 
 <head>
   <meta charset="<?php bloginfo('charset'); ?>">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="profile" href="https://gmpg.org/xfn/11">
+  <meta name="description" content="<?= esc_attr(get_the_excerpt()) ?>" />
+  <link rel="canonical" href="<?= esc_url(get_permalink()) ?>" />
+  <meta property="og:type" content="Press Release" />
+  <meta property="og:url" content="<?= esc_url(get_permalink()) ?>" />
+  <meta property="og:title" content="<?= esc_attr(get_the_title()) ?>" />
+  <meta property="og:description" content="<?= esc_attr(get_the_excerpt()) ?>" />
+  <meta property="og:image" content="<?= esc_url(get_the_post_thumbnail_url(null, 'full')) ?>" />	
+  <meta property="fb:app_id" content="119697833097399" />
   <?php wp_head(); ?>
 </head>
 
@@ -147,11 +155,10 @@ if ( $post_type == 'case' || $post_type == 'press_release' ) {
 		Share
         </div>
         <div class="popout-container">
-		<div class="fb-popout-btn"><a target="_blank" href="https://www.facebook.com/dialog/share?app_id=119697833097399&display=page&href=<?=$link?>&redirect_uri=<?=$link?>"><i class="fab fa-facebook-f"></i></a></div>
-		<div class="tw-popout-btn"><a target="_blank" href="http://twitter.com/share?text=<?=$title?>&url=<?=$full_url?>"><i class="fab fa-twitter"></i></a></div>
-		<div class="ln-popout-btn"><a target="_blank" href="https://www.linkedin.com/sharing/share-offsite/?url=<?=$full_url?>"><i class="fab fa-linkedin"></i></i></a></div>    
-		<div class="email-popout-btn"><a target="_blank" href="#"><i class="fa fa-envelope"></i></a></div>
-            
+		<div class="fb-popout-btn"><a target="_blank" class="facebook-share-btn"><i class="fab fa-facebook-f"></i></a></div>
+		<div class="tw-popout-btn"><a target="_blank" class="twitter-share-btn"><i class="fab fa-twitter"></i></a></div>
+		<div class="ln-popout-btn"><a target="_blank" class="linkedin-share-btn"><i class="fab fa-linkedin"></i></i></a></div> 
+		<div class="email-popout-btn"><a target="_blank" class="email-share-btn"><i class="fa fa-envelope"></i></a></div>             
         </div>
 </div>
 <div class="popout-button print-btn">
@@ -159,4 +166,5 @@ if ( $post_type == 'case' || $post_type == 'press_release' ) {
         <br />
         Print
 </div>
+	
 <?php } ?>

@@ -297,7 +297,7 @@ class adf_sidebar_section extends WP_Widget {
                             <p>".$author_name."</p>
                         </li>";
                     } else { 
-                        $legal_file_link = "<li class='sidebar_list_item'>
+                        $legal_file_link = "<li class='sidebar_list_item'>					
 						<a href='".$f['guid']."'>".$f['post_title']."</a> ... </li>";
                     }
 
@@ -387,7 +387,7 @@ function homepageheadlines_shortcode($atts) {
 				$pod_title = $related_pod->field('post_title'); 
 				$pod_content = $related_pod->field('press_release_card_summary'); 
             }
-            $thumbnail_url = $pod_thumbnail_url ? $pod_thumbnail_url : "http://localhost/adfmediadev.wpenginepowered.com/wp-content/uploads/2024/08/adf-logo-gray-254x280-1.png";
+            $thumbnail_url = $pod_thumbnail_url ? $pod_thumbnail_url : "https://adfmediadev.wpenginepowered.com/wp-content/uploads/2024/08/adf-logo-gray-254x280-1.png";
             if ($args['pod_name'] == "case") {
                 // case
                 $output .= '<div class="homepage-headlines">';
@@ -420,3 +420,22 @@ function homepageheadlines_shortcode($atts) {
     return $output;
 }
 add_shortcode('homepageheadlines', 'homepageheadlines_shortcode');
+
+// shortcode for iframe for sidebar global
+function custom_iframe_shortcode($atts) {
+    $atts = shortcode_atts(
+        array(
+            'src' => '',
+            'width' => '255',
+            'height' => '140',
+            'frameborder' => '0',
+            'allowfullscreen' => 'true',
+        ), 
+        $atts, 'iframe'
+    );
+    if (empty($atts['src'])) {
+        return '';
+    }
+    return '<iframe src="' . esc_url($atts['src']) . '" width="' . esc_attr($atts['width']) . '" height="' . esc_attr($atts['height']) . '" frameborder="' . esc_attr($atts['frameborder']) . '" allowfullscreen="' . esc_attr($atts['allowfullscreen']) . '"></iframe>';
+}
+add_shortcode('iframe', 'custom_iframe_shortcode');
