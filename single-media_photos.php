@@ -41,11 +41,12 @@
                             // Assuming $images contains the array with media photo data
                             if (!empty($pod->field( 'media_photo_images' ))) {
                                 foreach ($pod->field( 'media_photo_images' ) as $image) {
+									$image_path = str_replace(array('/home/wpe-user/sites/adfmediadev', '/sites/adfmediadev'), '', $image['guid']);
                                     ?>
                                     <div class="row mb-4">
                                         <div class="col-md-5 text-right">
-                                            <a href="<?php echo esc_url($image['guid']); ?>" target="_blank">
-                                                <img src="<?php echo esc_url($image['guid']); ?>" class="img-fluid" style="max-width: 300px;" alt="<?php echo esc_attr($image['post_title']); ?>">
+                                            <a href="<?php echo esc_url($image_path); ?>" target="_blank">
+                                                <img src="<?php echo esc_url($image_path); ?>" class="img-fluid" style="max-width: 300px;" alt="<?php echo esc_attr($image['post_title']); ?>">
                                             </a>
                                         </div>
                                         <div class="col-md-7">

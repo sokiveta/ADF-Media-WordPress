@@ -276,10 +276,10 @@ class adf_sidebar_section extends WP_Widget {
                             </div>
                             <p>".$f['post_content']."</p>
                         </div>
-                        </li>";
+                        </li>";                        
                     } elseif ($f['post_type'] == "attachment") {
                         $legal_file_link = "<li class='sidebar_list_item'>
-						<a href='".str_replace('/home/wpe-user/sites/adfmediadev', '', $f['guid'])."' target='_blank'>".$f['post_excerpt']."</a></li>";
+						<a href='".str_replace(array('/home/wpe-user/sites/adfmediadev', '/sites/adfmediadev'), '', $f['guid'])."' target='_blank'>".$f['post_excerpt']."</a></li>";
 					} elseif ($f['post_type'] == "case") {  
                         $legal_file_link = "<li class='sidebar_list_item'> <a href='/case/". $f['post_name']."'>".$f['post_title']."</a></li>";                
                     } elseif ($f['post_type'] == "press_release") {
@@ -371,7 +371,6 @@ function homepageheadlines_shortcode($atts) {
     )); 
     $img_size = ($args['pod_name'] == "case")?'medium':'thumbnail';
     $output = '';    
-    $pod_thumbnail_url = false;
     if ($pod->total() > 0) {
         while ($pod->fetch()) {
             $permalink = $pod->field('permalink');
@@ -387,13 +386,19 @@ function homepageheadlines_shortcode($atts) {
 				$pod_title = $related_pod->field('post_title'); 
 				$pod_content = $related_pod->field('press_release_card_summary'); 
             }
-            $thumbnail_url = $pod_thumbnail_url ? $pod_thumbnail_url : "https://adfmediadev.wpenginepowered.com/wp-content/uploads/2024/08/adf-logo-gray-254x280-1.png";
+            $pod_thumbnail_url = (!empty($pod_thumbnail_url) && !is_array($pod_thumbnail_url)) 
+            ? $pod_thumbnail_url 
+            : "https://adfmediadev.wpenginepowered.com/wp-content/uploads/2024/09/adf-logo-gray-254x280-1.png";
+            $post_thumbnail_url = (!empty($post_thumbnail_url) && !is_array($post_thumbnail_url)) 
+            ? $post_thumbnail_url 
+            : "https://adfmediadev.wpenginepowered.com/wp-content/uploads/2024/09/adf-logo-gray-65x65-2.png";
+
             if ($args['pod_name'] == "case") {
                 // case
                 $output .= '<div class="homepage-headlines">';
                 $output .= '<div class="headline-image">';
                 $output .= '<a href="' . esc_url($permalink) . '">';
-                $output .= '<img src="' . $thumbnail_url . '" alt="' . esc_attr($pod_title) . '" />';
+                $output .= '<img src="' . $pod_thumbnail_url . '" alt="' . esc_attr($pod_title) . '" />';
                 $output .= '</a>';
                 $output .= '</div>';	
                 $output .= '<div class="headline-text">';
@@ -405,7 +410,7 @@ function homepageheadlines_shortcode($atts) {
             } else {
                 // press_release
                 $output .= '<div class="homepage-coreissues">';
-                $output .= '<div class="coreissues-image">';
+                $output .= '<div class="coreissues-image">'.$post_thumbnail_url;
                 $output .= '<a href="' . esc_url($permalink) . '">';
                 $output .= '<img src="' . $post_thumbnail_url . '" alt="' . esc_attr($post_title) . '" />';
                 $output .= '</a>';
