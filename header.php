@@ -24,11 +24,12 @@ defined('ABSPATH') || exit;
   <link rel="profile" href="https://gmpg.org/xfn/11">
   <meta name="description" content="<?= esc_attr(get_the_excerpt()) ?>" />
   <link rel="canonical" href="<?= esc_url(get_permalink()) ?>" />
-  <meta property="og:type" content="Press Release" />
-  <meta property="og:url" content="<?= esc_url(get_permalink()) ?>" />
   <meta property="og:title" content="<?= esc_attr(get_the_title()) ?>" />
+  <meta property="og:type" content="<?= esc_attr((get_post_type()=="case" || get_post_type()=="press_release")?"article":"website") ?>" />
+  <meta property="og:url" content="<?= esc_url(get_permalink()) ?>" />
+  <meta property="og:image" content="<?= esc_url(get_the_post_thumbnail_url(null, 'full')?get_the_post_thumbnail_url(null, 'full'):"https://adflegaldev.wpenginepowered.com/wp-content/uploads/2020/04/adf-logo-resized-bio-110917_9.png") ?>" />	
   <meta property="og:description" content="<?= esc_attr(get_the_excerpt()) ?>" />
-  <meta property="og:image" content="<?= esc_url(get_the_post_thumbnail_url(null, 'full')) ?>" />	
+  <meta property="og:site_name" content="Alliance Defending Freedom" />  
   <meta property="fb:app_id" content="119697833097399" />
   <?php wp_head(); ?>
 </head>

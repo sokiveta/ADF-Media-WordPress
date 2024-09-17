@@ -178,7 +178,9 @@ get_header();
 					echo '<ul>';
 					foreach ($combined_files as $file) {
 						echo '<li>
-						<a href="'.str_replace(array('/home/wpe-user/sites/adfmediadev', '/sites/adfmediadev'), '', $file['guid']).'" target="_blank">' . esc_html($file['post_title']) . '</a> - ' . date('F j, Y', strtotime($file['post_date'])) . '</li>';
+						<a href="'.str_replace(array('/home/wpe-user/sites/adfmediadev', '/sites/adfmediadev'), '', $file['guid']).'" target="_blank">' . esc_html($file['post_excerpt']) . '</a>
+						</li>';
+						// date('F j, Y', strtotime($file['post_date']))
 					}
 					echo '</ul>';
 					echo '</div>';

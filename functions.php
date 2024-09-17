@@ -252,6 +252,10 @@ class adf_sidebar_section extends WP_Widget {
 			$adf_ul_class = "sidebar_list";		
             if (isset($pod_field[0]['post_type']) && $pod_field[0]['post_type'] != "") {				
              	if ($pod_field[0]['post_type'] == "press_release" || $pod_field[0]['post_type'] == "commentory" || $pod_field[0]['post_type'] == "commentary") {
+					// change order of the list of documents and press releases by descending (newest first)
+					usort($pod_field, function ($a, $b) {
+    					return $b['ID'] - $a['ID'];
+					});
 			 		$adf_ul_class .= " threecol_ul";
              	} 
 			}
